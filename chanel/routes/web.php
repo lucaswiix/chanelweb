@@ -12,5 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::prefix('/product')->group(function () {
+
+    Route::get('/esporte-e-lazer/{id}', 'esporteELazerController@show');
+
+});
+
+
+
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
