@@ -15,12 +15,14 @@
 <div class="col-md-5">
     <div id="product-slider" class="carousel slide carousel-fade" data-ride="carousel">
   <div class="carousel-inner">
-    
-    @foreach($images as $i)
-    <div class="carousel-item active">
+    <?php $count = 0; ?>
+    @foreach($images as $i)    
+
+    <div class="carousel-item {{ $count == 0 ? 'active' : '' }}">
 
       <img src="{{ asset('img/product_images/'.$i ) }}" class="d-block">
     </div>
+    <?php $count++; ?>
     @endforeach 
 
       <a class="carousel-control-prev" href="#product-slider" role="button" data-slide="prev">
