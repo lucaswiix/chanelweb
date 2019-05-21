@@ -16,10 +16,11 @@ Route::get('/', function () {
 });
 
 Route::prefix('/product')->group(function () {
+
     Route::get('/create', function () {
      return view('create_product');
     });
-    Route::get('/esporte-e-lazer/{id}', 'esporteELazerController@show');
+    Route::get('/{url}', 'productController@show');
 
     Route::post('/store', 'productController@store');
 

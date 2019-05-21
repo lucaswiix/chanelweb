@@ -18,9 +18,10 @@ class CreateTableProducts extends Migration
             $table->string('nome');
             $table->string('preco');
             $table->string('descricao');
+            $table->string('url')->unique();
             $table->bigInteger('quantidade'); // Quantidade
             $table->string('tamanho');
-            $table->string('imagem');
+            $table->string('images');
             $table->timestamps();
         });
     }

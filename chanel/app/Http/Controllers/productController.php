@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use DB;
 
 class productController extends Controller
 {
@@ -35,18 +36,47 @@ class productController extends Controller
      */
     public function store(Request $request)
     {
-        //colocar quantidade
+        try {
+            
+        
         $product = new Product;
-        $product->imagem = $request->file('imagem')->store('public/img/uploads');
+
+
+        if($request->hasfile('images'))
+            {
+
+        foreach($request->file('images') as $image)
+        {
+            $imgtemp = time();
+            $name= mt_rand(100, 9999) . "-" . $image->getClientOriginalName();
+            $image->move(public_path().'/img/product_images', $name);  
+            $data[] = $name;
+        }
+     }
+
+     
+            $product->imagem = json_encode($data);
+
+
         $product->nome = $request->nome;
         $product->preco = $request->preco;
         $product->descricao = $request->descricao;
         $product->tamanho = $request->tamanho;
         $product->quantidade = $request->quantidade;
-        if($product->save()){
-            return view('create_product');
-        }else {
-            return 'nao foi';
+
+        $url = str_replace(" ","-", $request->input('name'));
+            $url = strtolower($url);
+            $url = $url.'-'.mt_rand(100, 999);
+            $product->url = $url;
+
+
+        $product->save();
+        return redirect('product/'.$url);
+
+       } catch (Exception $e) {
+
+        return redirect()->back()->with('Error', $e);
+            
         }
     }
 
@@ -56,9 +86,13 @@ class productController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($url)
     {
-        //
+        $product = DB::table('products')->where('url', $url)->get();
+        if(count($product) > 0)
+            return view('product.show', ['product'=>$product]);
+        else
+            return redirect('/');
     }
 
     /**

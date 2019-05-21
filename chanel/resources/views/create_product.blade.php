@@ -2,11 +2,11 @@
 @section('body')
 @include('includes.menu-nav')
  <div class="container">
-<form action="/product/store" method="post">
+<form action="/product/store" method="post" enctype="multipart/form-data">
     @csrf
         <div class="form-group">
-                <label for="exampleFormControlFile1">Imagem</label>
-                <input name="imagem" type="file" class="form-control-file" id="exampleFormControlFile1">
+                <label for="exampleFormControlFile1">Imagens: *Selecione control para adicionar mais de uma.</label>
+                <input name="images[]" type="file" class="form-control-file" id="exampleFormControlFile1" multiple="multiple">
               </div>
     <div class="form-row">
         <div class="form-group col-md-6">
