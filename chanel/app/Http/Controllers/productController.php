@@ -48,14 +48,14 @@ class productController extends Controller
         foreach($request->file('images') as $image)
         {
             $imgtemp = time();
-            $name= mt_rand(100, 9999) . "-" . $image->getClientOriginalName();
+            $name= mt_rand(100, 9999) . "-" . mt_rand(100,999) . $image->getClientOriginalExtension();
             $image->move(public_path().'/img/product_images', $name);  
             $data[] = $name;
         }
      }
 
      
-            $product->imagem = json_encode($data);
+            $product->images = json_encode($data);
 
 
         $product->nome = $request->nome;
