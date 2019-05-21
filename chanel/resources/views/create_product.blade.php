@@ -2,7 +2,7 @@
 @section('body')
 @include('includes.menu-nav')
  <div class="container">
-<form action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
+<form action="/product/store" method="post" enctype="multipart/form-data">
     @csrf
         <div class="form-group">
                 <label for="exampleFormControlFile1">Imagens: *Selecione control para adicionar mais de uma.</label>
