@@ -8,21 +8,22 @@
 @if(count($product) > 0)
 
 @foreach ($product as $p)   
-<?php $images = json_decode($p->images);?>
+
 <section class="single-product">
 <div class="container">
 <div class="row">
 <div class="col-md-5">
     <div id="product-slider" class="carousel slide carousel-fade" data-ride="carousel">
   <div class="carousel-inner">
-    
-    @foreach($images as $i)
     <div class="carousel-item active">
-
-      <img src="{{ asset('img/product_images/'.$i ) }}" class="d-block">
+      <img src="{{ asset('img/produtos/esporte e lazer/barcelona 1.jpg' ) }}" class="d-block">
     </div>
-    @endforeach 
-
+    <div class="carousel-item">
+      <img src="{{ asset('img/produtos/esporte e lazer/barcelona 2.jpg' ) }}" class="d-block">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ asset('img/produtos/esporte e lazer/barcelona 3.jpg' ) }}" class="d-block">
+    </div>
       <a class="carousel-control-prev" href="#product-slider" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
@@ -48,7 +49,7 @@
       <i class="fa fa-star"></i>  
       <i class="fa fa-star"></i>  
         
-     <p class="price">R$ {{ number_format($p->preco, 2, ',', '.') }}</p>
+     <p class="price">R$ {{$p->preco}}</p>
      <p><b>Marca:</b> Nike</p>
      <p><b>Frete:</b> Grátis</p>
      <p class="redtext">Em Estoque</p>
