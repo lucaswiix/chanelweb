@@ -127,19 +127,27 @@
     </section>
     
     <!-----------------On Sale product------------------>
+
     <section class="on-sale">
     <div class="container">
         <div class="title-box">
         <h2>Promoção</h2>
         </div>
         <div class="row">
+            @foreach ($products as $p)
+            @php
+                $default = json_decode($p->images);
+            @endphp
         <div class="col-md-3">
         <div class="product-top">
-            <a href="paginas de produtos/sapatos/pegada.html"><img src="{{ asset('img/produtos/sapatos/pegada 1.jpg') }}" ></a> 
+          
+        <a href="/product/{{$p->url}}"><img src="{{ asset('img/product_images/'.$default[0]) }}" ></a> 
             <div class="overlay-right">
+            <a href="/product/{{$p->url}}">
             <button type="button" class="btn btn-secondary" title="Quick Shop">
                <i class="fa fa-eye"></i> 
             </button>
+            </a>
             <button type="button" class="btn btn-secondary" title="Add to Wishlist">
                <i class="fa fa-heart-o"></i> 
             </button>
@@ -154,91 +162,13 @@
           <i class="fa fa-star"></i>  
           <i class="fa fa-star"></i>  
           <i class="fa fa-star-half-o"></i>  
-            <h3>Sapato Social Pegada</h3>
-            <h5>R$ 159,99</h5>
+        <h3>{{$p->nome}}</h3>
+        <h5>R$ {{ number_format($p->preco, 2, ',', '.') }}</h5>
         </div>
         </div>
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/moda feminina/Blusa Feminina Cropped Listrada Manga Longa Razon.html"><img src="{{ asset('img/produtos/Moda feminina/Blusa Feminina Cropped Listrada Manga Longa Razon 1.jpg') }}" ></a>
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-            <h3>Blusa Feminina Cropped Listrada</h3>
-            <h5>R$ 79,00</h5>
-        </div>
-        </div>
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/esporte e lazer/Camisa Barcelona Home 2018.html"><img src="{{ asset('img/produtos/esporte e lazer/barcelona 1.jpg') }}" ></a>
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-            <h3>Camisa Barcelona</h3>
-            <h5>R$ 235,00</h5>
-        </div>
-        </div>
-         
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/moda masculina/Camiseta Masculina Estampa Peixes Manga Curta.html"><img src="{{ asset('img/produtos/Moda masculina/Camiseta Masculina Estampa Peixes Manga Curta 1.jpg') }}" ></a>
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star-half-o"></i>  
-          <i class="fa fa-star-o"></i>  
-            <h3>Camiseta Masculina Estampa Peixes</h3>
-            <h5>R$ 35,00</h5>
-        </div>
-        </div>    
-        
-        </div>
+        @endforeach
     </div>  
+    </div>
     </section>
         
     <!--------------New Products----------------->    

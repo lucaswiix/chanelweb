@@ -17,11 +17,11 @@ class CreateTableProducts extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->string('preco');
-            $table->string('descricao');
+            $table->longText('descricao');
             $table->string('url')->unique();
             $table->bigInteger('quantidade'); // Quantidade
             $table->string('tamanho');
-            $table->string('images');
+            $table->longText('images');
             $table->timestamps();
         });
     }
