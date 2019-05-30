@@ -6,8 +6,16 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use DB;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    function index(){
+
+        $products = DB::table('products')->orderBy('created_at', 'DESC')->limit(20)->get();
+
+        return view('index', ['products' => $products]);
+    }
 }
