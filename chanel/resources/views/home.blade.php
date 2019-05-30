@@ -14,7 +14,20 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <table>
+                    <tr style="height:50px;">
+                        <td>  Bem vindo {{auth::user()->name}}!</td>
+                    </tr>                    
+                    <tbody>
+                        <tr>
+                            <td>Menu:</td>
+                        </tr>
+                        <tr><td><a href="/product/create"> Criar produto</a></td></tr>
+
+                    </tbody>
+                    </table>
+
+                    
                 </div>
             </div>
         </div>

@@ -54,9 +54,11 @@
      <p><b>Marca:</b> Nike</p>
      <p><b>Frete:</b> Grátis</p>
      <p class="redtext">Em Estoque</p>
-     <label>Quantidade: </label>
-     <input type="text" value="{{$p->quantidade}}">
-     <button type="button" class="btn btn-primary">Adicionar ao carrinho</button>
+     <label>Estoque: </label>
+     <input type="text" value="{{$p->quantidade}}" readonly><br><br>
+      <a href="/addcarrinho/{{$p->id}}">
+        <button type="button" class="btn btn-primary">Adicionar ao carrinho</button>
+      </a>
 
        
 

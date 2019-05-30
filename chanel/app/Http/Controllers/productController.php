@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use DB;
-
+use Illuminate\Support\Facades\Auth;
 class productController extends Controller
 {
     /**
@@ -25,7 +25,9 @@ class productController extends Controller
      */
     public function create()
     {
-        //
+        if(!auth::check()) return redirect()->back()->with('error', 'você precisa efetuar o login para fazer isto.');
+       return view('create_product');
+
     }
 
     /**
@@ -56,10 +58,10 @@ class productController extends Controller
 
      
             $product->images = json_encode($data);
-
+            
 
         $product->nome = $request->nome;
-        $product->preco = $request->preco;
+        $product->preco = str_replace(',', '.', $request->preco);
         $product->descricao = $request->descricao;
         $product->tamanho = $request->tamanho;
         $product->quantidade = $request->quantidade;

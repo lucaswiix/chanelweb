@@ -6,9 +6,35 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<script src="{{asset('js/jquery.mask.min.js')}}"></script>
+
 </head>
 
 <body>
+
+        @if(session('error') || session('success'))
+        <script>
+          $( document ).ready(function() {
+            $('#warningToast').toast({delay:5000});
+            $('#warningToast').toast('show');
+          });
+        </script>
+        <div aria-live="polite" aria-atomic="true" style="z-index:9999999;position: fixed; top: 75px; right: 20px;min-height:200px;" >
+          <div class="toast" id="warningToast">
+          <div class="toast-header {{session('error') ? 'bg-warning' : 'bg-success'}}">
+                <i class="{{session('error') ? 'fa fa-exclamation' : 'fas fa-check-double'}}"></i>
+              <strong class="mr-auto font-weight-500">&nbsp;&nbsp;{{session('error') ? 'Ops!' : 'Sucesso!'}}</strong>        
+              <small>Agora</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body" style="color:#212529;">
+              {{session('error') ? session('error') : session('success')}}
+            </div>
+          </div>
+        </div>
+        @endif
 
 
 @yield('body')

@@ -15,14 +15,18 @@ Route::get('/', 'controller@index');
 
 Route::prefix('/product')->group(function () {
 
-    Route::get('/create', function () {
-     return view('create_product');
-    });
+    Route::get('/create', 'productController@create');
+
     Route::get('/{url}', 'productController@show');
 
     Route::post('/store', 'productController@store');
 
 });
+Route::get('/addcarrinho/{id}', 'SessionController@addToCart');
+Route::get('/removecarrinho/{id}', 'SessionController@removeToCart');
+
+Route::get('/cart', 'SessionController@cart');
+Route::get('/checkout', 'SessionController@checkout');
 
 
 
