@@ -4,74 +4,6 @@
   @include('includes.menu-nav')
         
     <section class="header">
-    <div class="side-menu" id="side-menu">
-    <ul>
-            <li>Moda masculina <i class="fa fa-angle-right"></i> 
-                <ul>
-                  <a href="paginas de produtos/moda masculina/Camiseta Masculina Estampa Peixes Manga Curta.html"><li>Camiseta Estampa Peixes</li></a>
-                  <a href="paginas de produtos/moda masculina/Camisa Masculina Estampa Xadrez.html"><li>Camisa Estampa Xadrez</li></a>
-                  <a href="paginas de produtos/moda masculina/Casaco Masculino Moletom Bicolor Bolsos.html"><li>Casaco Moletom Bicolor</li></a>
-                
-                </ul>
-            </li>
-            
-            <li>Moda feminina<i class="fa fa-angle-right"></i>  
-            <ul>
-              <a href="paginas de produtos/moda feminina/Blusa Feminina Cropped Listrada Manga Longa Razon.html"><li>Blusa Cropped Listrada</li></a>
-              <a href="paginas de produtos/moda feminina/Blusa Feminina Estampa Beijo Manga Curta.html"><li>Blusa Estampa Beijo</li></a>
-              <a href="paginas de produtos/moda feminina/Blusão Feminino Moletom Bordado Manga Longa.html"> <li>Blusão Moletom Bordado</li></a>
-                
-                </ul> 
-            </li>
-            
-            <li>Fitness <i class="fa fa-angle-right"></i>
-                <ul>
-               <a href="paginas de produtos/fitness/Blusa Feminina Fitness Manga Longa.html"> <li>Blusa Fitness</li></a>
-               <a href="paginas de produtos/fitness/Blusa Feminina Fitness Tiras Transpassadas Manga Longa.html"> <li>Blusa Tiras Transpassadas</li></a>
-              <a href="paginas de produtos/fitness/Regata Feminina Fitness.html"><li>Regata Fitness</li></a>
-             
-                </ul>
-            </li>
-            
-            <li>Vestidos <i class="fa fa-angle-right"></i>   
-                <ul>
-                <a href="paginas de produtos/vestidos/Vestido Feminino Babados Alcas Finas.html"><li>Vestido Babados </li>
-                <a href="paginas de produtos/vestidos/Vestido Feminino Midi Listrado Alças Finas.html"><li>Vestido  Midi Listrado</li></a>
-                <a href="paginas de produtos/vestidos/Vestido Feminino Ombro a Ombro Manga Curta Uber Jeans.html"><li>Vestido Ombro a Ombro</li></a>
-              
-                </ul>
-            </li>
-            
-            <li>Jeans <i class="fa fa-angle-right"></i>  
-                <ul>
-                <a href="paginas de produtos/jeans/Blusão Feminino Moletom Bordado Manga Longa.html"><li>Blusão Moletom Bordado</li></a>
-                <a href="paginas de produtos/jeans/Colete Masculino Jeans Destroyed Rock & Soda.html"><li>Camisa Jeans</li></a>
-                <a href="paginas de produtos/jeans/Colete Masculino Jeans Destroyed Rock & Soda.html"><li>Colete Jeans</li></a>
-            
-                </ul> 
-            </li>
-            
-            <li>Esporte e Lazer<i class="fa fa-angle-right"></i>  
-              <ul>
-              <a href="paginas de produtos/esporte e lazer/Camisa Barcelona Home 2018.html"><li>Camisa Barcelona</li></a>
-             <a href="paginas de produtos/esporte e lazer/Camisa Real Madrid Home 2018.html"><li>Camisa Real Madrid</li></a> 
-             <a href="paginas de produtos/esporte e lazer/Capacete Vengeance Hybrid.html" ><li>Capacete Vengeance</li></a>
-         
-              </ul> 
-          </li>
-          
-          <li>Sapatos<i class="fa fa-angle-right"></i>  
-            <ul>
-            <a href="paginas de produtos/sapatos/adidas.html"><li>adidas</li></a>
-            <a href="paginas de produtos/sapatos/Nike.html"><li>Nike</li></a>
-            <a href="paginas de produtos/sapatos/pegada.html"><li>pegada</li></a>
-            
-            </ul> 
-        </li>
-        
-           
-        </ul>  
-    </div>
     <div class="slider">
       <div id="slider" class="carousel slide carousel-fade" data-ride="carousel">
       <div class="carousel-inner">
@@ -131,7 +63,7 @@
     <section class="on-sale">
     <div class="container">
         <div class="title-box">
-        <h2>Promoção</h2>
+        <h2>Vitrine</h2>
         </div>
         <div class="row">
             @foreach ($products as $p)
@@ -144,24 +76,35 @@
         <a href="/product/{{$p->url}}"><img src="{{ asset('img/product_images/'.$default[0]) }}" ></a> 
             <div class="overlay-right">
             <a href="/product/{{$p->url}}">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
+            
+            <button type="button" class="btn btn-secondary" title="Quick Shop" onclick="window.location='/product/{{$p->url}}';">
                <i class="fa fa-eye"></i> 
             </button>
+          
             </a>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
+            <form action="{{route('addToCart')}}" method="POST">
+                @csrf
+              
+               <input type="hidden" value="{{$p->id}}" name="id">
+               <input type="hidden" value="{{$p->preco}}" name="cost"> 
+               <input type="hidden" value="{{$p->quantidade}}" name="maxQuantity"> 
+               <input type="hidden" value="{{$default[0]}}" name="image"> 
+               <input type="number" name="quantity" value="1" hidden>
+              
+               <button type="submit" class="btn btn-secondary" title="Add to Cart">
+                  <i class="fa fa-shopping-cart"></i> 
+               </button>
+                    </form>
+
+              
             </div>
         </div>
         <div class="product-bottom text-center">
+          {{-- <i class="fa fa-star"></i>  
           <i class="fa fa-star"></i>  
           <i class="fa fa-star"></i>  
           <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star-half-o"></i>  
+          <i class="fa fa-star-half-o"></i>   --}}
         <h3>{{$p->nome}}</h3>
         <h5>R$ {{ number_format($p->preco, 2, ',', '.') }}</h5>
         </div>
@@ -169,226 +112,7 @@
         @endforeach
     </div>  
     </div>
-    </section>
-        
-    <!--------------New Products----------------->    
-    <section class="new-products">
-       <div class="container">
-        <div class="title-box">
-        <h2>Novidades</h2>
-        </div>
-        <div class="row">
-        <div class="col-md-3">
-        <div class="product-top">   
-            <a href="paginas de produtos/vestidos/Vestido Feminino Babados Alcas Finas.html"><img src="{{ asset('img/produtos/vestidos/Vestido Feminino Babados Alças Finas 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star-half-o"></i>  
-            <h3>Vestido Feminino Babados Alças Finas</h3>
-            <h5>R$ 89,95</h5>
-        </div>
-        </div>
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/fitness/Regata Feminina Fitness.html"><img src="{{ asset('img/produtos/Fitness/Regata Feminina Fitness 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-            <h3>Regata Feminina Fitness</h3>
-            <h5>R$ 35,00</h5>
-        </div>
-        </div>
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/sapatos/adidas.html"><img src="{{ asset('img/produtos/sapatos/adidas 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-            <h3>Tênis Adidas Vs Advantage</h3>
-            <h5>R$ 199,99</h5>
-        </div>
-        </div>
-         
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/moda masculina/Casaco Masculino Moletom Bicolor Bolsos.html"><img src="{{ asset('img/produtos/Moda masculina/Casaco Masculino Moletom Bicolor Bolsos 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star-half-o"></i>  
-          <i class="fa fa-star-o"></i>  
-            <h3>Casaco Masculino Moletom</h3>
-            <h5>R$ 119,00</h5>
-        </div>
-        </div> 
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/sapatos/Nike.html"><img src="{{ asset('img/produtos/sapatos/nike 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star-half-o"></i>  
-            <h3>Tênis Nike Legend</h3>
-            <h5>R$ 400,00</h5>
-        </div>
-        </div>
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/vestidos/Vestido Feminino Ombro a Ombro Manga Curta Uber Jeans.html"><img src="{{ asset('img/produtos/vestidos/Vestido Feminino Ombro a Ombro Manga Curta Uber Jeans 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-            <h3>Vestido Feminino Ombro a Ombro</h3>
-            <h5>R$ 85,90</h5>
-        </div>
-        </div>
-            
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/moda masculina/Camisa Masculina Estampa Xadrez.html"><img src="{{ asset('img/produtos/Moda masculina/CAMISA-ML-XADREZ 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-            <h3>Camisa Masculina Estampa Xadrez</h3>
-            <h5>R$ 100,00</h5>
-        </div>
-        </div>
-         
-        <div class="col-md-3">
-        <div class="product-top">
-            <a href="paginas de produtos/jeans/Camisa Masculina Jeans Manga Curta Zune Jeans.html"><img src="{{ asset('img/produtos/jeans/Camisa Masculina Jeans Manga Curta Zune Jeans 1.jpg') }}" ></a> 
-            <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Quick Shop">
-               <i class="fa fa-eye"></i> 
-            </button>
-            <button type="button" class="btn btn-secondary" title="Add to Wishlist">
-               <i class="fa fa-heart-o"></i> 
-            </button>
-                <button type="button" class="btn btn-secondary" title="Add to Cart">
-               <i class="fa fa-shopping-cart"></i> 
-            </button>
-            </div>
-        </div>
-        <div class="product-bottom text-center">
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star"></i>  
-          <i class="fa fa-star-half-o"></i>  
-          <i class="fa fa-star-o"></i>  
-            <h3>Camisa Masculina Jeans</h3>
-            <h5>R$ 35,00</h5>
-        </div>
-        </div>
-        
-        </div>
-    </div>
-    </section>  
+    </section>        
         
     <!----------------Website features----------------->
     

@@ -9,7 +9,11 @@
         </div> 
         <div class="menu-bar">
         <ul>
-        <li><a href="/cart"><i class="fa fa-shopping-cart"></i> Carrinho</a></li>    
+            @php
+                if(Session::has('cart')) $cart = Session::get('cart');
+                else $cart = [];
+            @endphp
+        <li><a href="/cart"><i class="fa fa-shopping-cart"></i> {{count($cart)}} Carrinho</a></li>    
         @if(Auth::check())    
         <li><a href="/home">Minha Conta</a></li> 
         @else    

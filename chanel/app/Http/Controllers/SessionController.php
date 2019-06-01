@@ -9,44 +9,99 @@ use DB;
 class SessionController extends Controller
 {
 
+    public function checkout(Request $request){
+
+        if(!$request->session()->has('cart')) return redirect()->back()->with('error', 'O seu carrinho esta vazio... Começe comprando algo!');
+        if(!count($request->session()->get('cart')) >0 )  return redirect()->back()->with('error', 'O seu carrinho esta vazio... Começe comprando algo!');
+        return view('checkout');
+    }
+
     public function cart(Request $request){
-        if(!$request->session()->has('products')) $request->session()->put('products', []);
+        if(!$request->session()->has('cart')) $request->session()->put('cart', []);
         
-        $sp = DB::table('products')->whereIn('id', $request->session()->get('products'))->get();
-
-        return view('shopping_cart', ['sproducts' => $sp]);
+        return view('shopping_cart');
     }
 
-    public function addToCart(Request $request, $id){      
-        $products = [];
-        if(!$request->session()->has('products'))        
-            $request->session()->put('products', $products);
-        else
-        $products = $request->session()->get('products');
+    public function addToCart(Request $request){  
 
-        
-        
-        if(in_array($id, $products)){ 
-            return redirect()->back()->with('error', 'Este produto já esta no carrinho!');      
+        if(!$request->session()->has('cart')){
+            if($request->quantity > $request->maxQuantity) return redirect()->back()->with('error', 'A quantidade é maior que temos em estoque.');
+
+            $data = [];
+
+            $cart = [
+                'id'        =>      $request->id,
+                'image'     =>      $request->image,
+                'quantity'  =>      $request->quantity,
+                'cost'      =>      $request->cost,
+                'totalCost' =>      $request->cost*$request->quantity,
+            ];
+
+            array_push($data, $cart);
+            $request->session()->put('cart', $data);
+
+            return redirect()->back()->with('success', 'Novo item no carrinho! Uhuul');
         }
 
-        $request->session()->push('products', $id);
+            if($request->quantity > $request->maxQuantity) return redirect()->back()->with('error', 'A quantidade é maior que temos em estoque.');
 
-        return redirect()->back()->with('success', 'Produto adicionado no carrinho!');
+            $cart = $request->session()->get('cart');
+            $find = false;
+            for ($i=0; $i < count($cart); $i++) { 
+                if($cart[$i]['id'] == $request->id){
+                    if($cart[$i]['quantity'] >= $request->maxQuantity) return redirect()->back()->with('error', 'A quantidade é maior que temos em estoque.');
+                    $find = true;
+                    $cart[$i]['quantity'] += $request->quantity;
+                    $cart[$i]['totalCost'] =  $cart[$i]['cost']*$cart[$i]['quantity'];
+                }
+            }
+            if($find){
+        $request->session()->put('cart', $cart);
+            }else{
+                $cart = [
+                    'id'            =>      $request->id,
+                    'image'         =>      $request->image,
+                    'quantity'      =>      $request->quantity,
+                    'cost'          =>      $request->cost,
+                    'totalCost'     =>      $request->cost*$request->quantity,
+                ];
+                $request->session()->push('cart', $cart);
+            }          
+       
+
+        return redirect()->back()->with('success', 'Carrinho atualizado. Continue as compras!');    
     }
 
-    public function removeToCart(Request $request, $id){
-        $products = $request->session()->get('products');
+    public function removeToCart(Request $request){
+        if(!$request->session()->has('cart')) return redirect()->back()->with('error', 'O seu carrinho já esta vazio!');
+       
+        $cart = $request->session()->get('cart');
 
-        if(count($products) > 0){
-            // return $products;
-            $key = array_search($id, $products);
-            if($key != null || $key == 0) unset($products[$key]);
-            else return redirect()->back()->with('error', 'Este produto não foi encontrado.');
+        if(count($cart) > 0){
+            for ($i=0; $i < count($cart); $i++) { 
+                if($cart[$i]['id'] == $request->id){
+                    if($cart[$i]['quantity'] > 1){
+                        $cart[$i]['quantity'] = $cart[$i]['quantity']-1;
+                        $cart[$i]['totalCost'] = $cart[$i]['cost']*$cart[$i]['quantity'];
+                    }else{
+                        unset($cart[$i]);
+                    }
+                }
+            }
         }
 
-        $request->session()->put('products', $products);
+        $request->session()->put('cart', $cart);
 
         return redirect()->back()->with('success', 'Produto removido do carrinho!');
+    }
+
+    public function cleanAllCart(Request $request){
+
+        if(!$request->session()->has('cart')) return redirect()->back()->with('error', 'O seu carrinho já esta vazio!');
+
+        $request->session()->forget('products');
+        $request->session()->forget('cart');
+
+        return redirect()->back()->with('success', 'Carrinho limpo com sucesso!');
     }
 }

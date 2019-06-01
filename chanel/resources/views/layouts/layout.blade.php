@@ -1,6 +1,9 @@
 <html>
 <head>
-<title>E-Commerce Website </title>
+<title>Chanel - E-Commerce </title>
+<link rel="icon" href="{{asset('img/favicon.ico')}}">
+
+
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,7 +65,7 @@
           </div>
           <div class="col-md-3 footer-image">
               <h1>Em breve</h1>
-              <img src="imagens/app-logo.png">
+              <img src="{{asset('img/app-logo.png')}}">
           </div>
       </div>
       <hr>

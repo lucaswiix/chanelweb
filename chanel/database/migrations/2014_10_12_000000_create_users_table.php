@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             
             $table->bigInteger('role')->default(0);
 
+
             $table->rememberToken();
             $table->timestamps();
         });

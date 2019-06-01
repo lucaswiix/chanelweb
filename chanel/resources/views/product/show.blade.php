@@ -51,14 +51,22 @@
       <i class="fa fa-star"></i>  
         
      <p class="price">R$ {{ number_format($p->preco, 2, ',', '.') }}</p>
-     <p><b>Marca:</b> Nike</p>
+     {{-- <p><b>Marca:</b> Nike</p> --}}
      <p><b>Frete:</b> Grátis</p>
-     <p class="redtext">Em Estoque</p>
-     <label>Estoque: </label>
-     <input type="text" value="{{$p->quantidade}}" readonly><br><br>
-      <a href="/addcarrinho/{{$p->id}}">
-        <button type="button" class="btn btn-primary">Adicionar ao carrinho</button>
-      </a>
+     <p class="redtext">Quantidade em estoque: {{$p->quantidade}}</p>
+     
+
+ <form action="{{route('addToCart')}}" method="POST">
+  @csrf
+
+ <input type="hidden" value="{{$p->id}}" name="id">
+ <input type="hidden" value="{{$p->preco}}" name="cost"> 
+ <input type="hidden" value="{{$p->quantidade}}" name="maxQuantity"> 
+ <input type="hidden" value="{{$images[0]}}" name="image"> 
+ <input type="number" name="quantity" value="1">
+
+        <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
+      </form>
 
        
 
@@ -83,88 +91,39 @@
 @endif
 <div class="container">
     <div class="title-box">
-    <h2>Similar</h2>
+    <h2>Recomendados</h2>
     </div>
     <div class="row">
-    <div class="col-md-3">
-    <div class="product-top">
-        <a href="Camisa Real Madrid Home 2018.html"><img src="{{ asset('img/produtos/esporte e lazer/Real Madrid Home 2018 1.jpg' ) }}"></a> 
-        <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Adicionar ao Carrinho">
-           <i class="fa fa-shopping-cart"></i> 
-        </button>
-        </div>
-    </div>
-    <div class="product-bottom text-center">
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>   
-        <h3>Camisa Real Madrid</h3>
-        <h5>R$ 350,00</h5>
-    </div>
-    </div>
+      @if(count($reco) > 0)
+        @foreach ($reco as $r)
+        @php
+        $default = json_decode($r->images);
+    @endphp
+            
         
     <div class="col-md-3">
     <div class="product-top">
-        <a href="Capacete Vengeance Hybrid.html"><img src="{{ asset('img/produtos/esporte e lazer/Capacete Vengeance Hybrid 1.jpg' ) }}"></a> 
+        <a href="/product/{{$r->url}}"><img src="{{ asset('img/product_images/'.$default[0] ) }}"></a> 
         <div class="overlay-right">
             <button type="button" class="btn btn-secondary" title="Adicionar ao Carrinho">
            <i class="fa fa-shopping-cart"></i> 
         </button>
         </div>
     </div>
-    <div class="product-bottom text-center">
+     <div class="product-bottom text-center">
+      {{--
+        <i class="fa fa-star"></i>  
       <i class="fa fa-star"></i>  
       <i class="fa fa-star"></i>  
       <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-        <h3>Capacete Vengeance</h3>
-        <h5>R$1000,00</h5>
+      <i class="fa fa-star"></i>    --}}
+      <h3>{{$r->nome}}</h3>
+      <h5>R$ {{ number_format($r->preco, 2, ',', '.') }}</h5>
     </div>
     </div>
-        
-    <div class="col-md-3">
-    <div class="product-top">
-        <a href="../fitness/Blusa Feminina Fitness Tiras Transpassadas Manga Longa.html"><img src="{{ asset('img/produtos/fitness/Blusa Feminina Fitness Tiras Transpassadas Manga Longa 1.jpg' ) }}"></a> 
-        <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Adicionar ao Carrinho">
-           <i class="fa fa-shopping-cart"></i> 
-        </button>
-        </div>
-    </div>
-    <div class="product-bottom text-center">
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-        <h3>Blusa Feminina Fitness</h3>
-        <h5>R$50.00</h5>
-    </div>
-    </div>
-     
-    <div class="col-md-3">
-    <div class="product-top">
-        <a href="../fitness/Regata Feminina Fitness.html"><img src="{{ asset('img/produtos/fitness/Regata Feminina Fitness 1.jpg' ) }}"></a> 
-        <div class="overlay-right">
-            <button type="button" class="btn btn-secondary" title="Adicionar ao Carrinho">
-           <i class="fa fa-shopping-cart"></i> 
-        </button>
-        </div>
-    </div>
-    <div class="product-bottom text-center">
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star"></i>  
-      <i class="fa fa-star-half-o"></i>  
-      <i class="fa fa-star-o"></i>  
-        <h3>Regata Feminina Fitness</h3>
-        <h5>R$35.00</h5>
-    </div>
-    </div>    
+    @endforeach
+    @endif
+  
     
     </div>
 </div>

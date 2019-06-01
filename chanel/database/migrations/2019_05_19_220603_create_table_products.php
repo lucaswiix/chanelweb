@@ -17,7 +17,7 @@ class CreateTableProducts extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->decimal('preco', 8, 2);
-            $table->longText('descricao');
+            $table->longText('descricao')->nullable();
             $table->string('url')->unique();
             $table->bigInteger('quantidade'); // Quantidade
             $table->string('tamanho');

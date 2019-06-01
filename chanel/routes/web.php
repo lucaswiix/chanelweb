@@ -22,10 +22,16 @@ Route::prefix('/product')->group(function () {
     Route::post('/store', 'productController@store');
 
 });
-Route::get('/addcarrinho/{id}', 'SessionController@addToCart');
-Route::get('/removecarrinho/{id}', 'SessionController@removeToCart');
 
+Route::post('/addToCart', 'SessionController@addToCart')->name('addToCart');
+Route::post('/rmToCast', 'SessionController@removeToCart')->name('rmToCart');
+Route::post('/cleanAllCart', 'SessionController@cleanAllCart')->name('cleanAllCart');
+Route::get('/cleanAllCart', 'SessionController@cleanAllCart')->name('cleanAllCart');
+
+route::post('/checkout/confirm', 'productController@storeCheckout')->name('storeCheckout');
 Route::get('/cart', 'SessionController@cart');
+Route::get('/deletedBuy/{id}', 'productController@deletedBuy');
+
 Route::get('/checkout', 'SessionController@checkout');
 
 

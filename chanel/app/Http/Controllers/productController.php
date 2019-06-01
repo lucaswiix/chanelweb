@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductHistory;
 use DB;
 use Illuminate\Support\Facades\Auth;
 class productController extends Controller
@@ -18,6 +19,87 @@ class productController extends Controller
         //
     }
 
+    public function storeCheckout(Request $request){
+
+        if(!auth::check()) return redirect()->back()->with('error', 'Necessário estar autenticado para isto');
+
+        if(!$request->session()->has('cart')) return redirect()->back()->with('error', 'Não achamos nada no seu carrinho');
+
+        $cart = $request->session()->get('cart');
+
+        if(!count($cart) > 0)
+        {
+            return redirect('/')->with('error', 'Este carrinho não possui itens.');
+
+        }
+            for ($i=0; $i < count($cart); $i++) { 
+                # code...
+            
+
+            
+        $sp = DB::table('products')->where('id', $cart[$i]['id'])->get();
+
+        foreach ($sp as $s) {
+            # code...
+        if($cart[$i]['quantity'] > $s->quantidade) return redirect()->back()->with('error', 'Não temos estoque para este pedido =(');
+  
+        $request->validate([
+                'country'=>'required',
+                'state'=>'required',
+                'cep'=>'required',
+                'address'=>'required'
+            ]);
+    
+            switch ($request->paymentMethod) {
+                case 0:
+                $request->paymentMethod = 'Debito';
+                    break;
+                case 1:
+                $request->paymentMethod = 'Credito';
+                    break;
+                default:
+                    return redirect()->back()->withError('error', 'O metodo de pagamento inválido')->withInput($request->all());
+                    break;
+            }
+            $ph = new ProductHistory([
+                'date' => now(),
+                'product_id'    => $cart[$i]['id'],
+                'quantity'      => $cart[$i]['quantity'],
+                'cost'          => $s->preco*$cart[$i]['quantity'],
+                'paymentMethod' => $request->paymentMethod,
+                'user_id'       => auth::user()->id,
+                'country'       => $request->country,
+                'state'         => $request->state,
+                'address'       => $request->address,
+                'cep'           => $request->cep                
+            ]);
+            
+            $request->session()->forget('cart');
+            $ph->save();
+            }
+            
+             
+        }
+        return redirect('/home')->with('success', 'Compra realizada com sucesso.');
+
+    
+
+    }
+
+    public function deletedBuy($id){
+        
+        if(!auth::check()) return redirect()->back()->with('error', 'Você não esta logado para fazer isto.');
+
+        $ph = ProductHistory::find($id);
+        if($ph->user_id == auth::user()->id && $ph->status == "waiting"){
+        $ph->delete();
+            return redirect()->back()->with('success', 'Você cancelou sua compra com sucesso!');
+        }else{
+            return redirect()->back()->with('error', 'Esta compra não é sua ou não esta disponivél para ser cancelada.');
+         }
+
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +107,8 @@ class productController extends Controller
      */
     public function create()
     {
-        if(!auth::check()) return redirect()->back()->with('error', 'você precisa efetuar o login para fazer isto.');
+        if(!auth::check()) return redirect('/')->back()->with('error', 'você precisa efetuar o login para fazer isto.');
+
        return view('create_product');
 
     }
@@ -42,6 +125,12 @@ class productController extends Controller
             
         
         $product = new Product;
+
+        $request->validate([
+            'nome'=>'required|min:5',
+            'preco'=>'required|min:2',
+            'quantidade'=>'required|min:1'
+        ]);
 
 
         if($request->hasfile('images'))
@@ -91,8 +180,12 @@ class productController extends Controller
     public function show($url)
     {
         $product = DB::table('products')->where('url', $url)->get();
+        $recommends = DB::table('products')->orderBy('created_at', 'DESC')->limit(4)->get();
         if(count($product) > 0)
-            return view('product.show', ['product'=>$product]);
+            return view('product.show', [
+                'product'      =>      $product,
+                'reco'  =>  $recommends
+                ]);
         else
             return redirect('/');
     }
