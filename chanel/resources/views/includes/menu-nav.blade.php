@@ -4,9 +4,18 @@
             <i class="fa fa-times" id="close-btn" onclick="closemenu()"></i>
             
             <a href="/"><img src="{{ asset('img/logo1.png') }}"  class="logo"></a>
-        <input type="text" class="form-control">
-        <span class="input-group-text"><i class="fa fa-search"></i></span>
+            
+            <input type="text" name="s" id="fromSearch" onkeypress="callToSearchBox();" placeholder="Buscar no Chanel" class="form-control">
+
+        <button type="button" 
+            onclick="event.preventDefault();
+                          document.getElementById('send_search').submit();" style="background-color:transparent;border:none;">
+
+            <span class="input-group-text"><i class="fa fa-search"></i></span>
+        </button>
+            
         </div> 
+    
         <div class="menu-bar">
         <ul>
             @php
@@ -23,3 +32,13 @@
         </ul>   
         </div> 
         </div>
+        <script>
+            function callToSearchBox(){
+                var val =  $('#fromSearch').val();
+                $('#searchbox').val(val);
+                }
+        </script>
+        <form action="{{route('search')}}" id="send_search" class="row" style="display:none;">           
+                <input type="text" name="s" placeholder="Buscar no Chanel" id="searchbox" class="form-control">
+        
+            </form> 

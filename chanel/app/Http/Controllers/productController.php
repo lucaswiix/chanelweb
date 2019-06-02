@@ -19,6 +19,14 @@ class productController extends Controller
         //
     }
 
+    public function searchProduct(){
+        if(isset($_GET) && isset($_GET['s'])){
+            $g = DB::table('products')->where('nome', 'LIKE', '%'.$_GET['s'].'%')->orderBy('created_at', 'DESC')->get();
+            return view('searchProduct', ['search' => $g]);
+
+        }
+    }
+
     public function storeCheckout(Request $request){
 
         if(!auth::check()) return redirect()->back()->with('error', 'Necessário estar autenticado para isto');

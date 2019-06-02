@@ -34,6 +34,7 @@ Route::get('/deletedBuy/{id}', 'productController@deletedBuy');
 
 Route::get('/checkout', 'SessionController@checkout');
 
+route::get('/search', 'productController@searchProduct')->name('search');
 
 
 
